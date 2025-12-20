@@ -47,20 +47,23 @@ if payment_method!='All':
     filtered_df=filtered_df[filtered_df['Payment Method']==payment_method]   
 
 #----------------Showing KPI data--------------
-col1,col2,col3=st.columns(3)
+col1,col2,col3,col4=st.columns(4)
 col1.metric("Total sale ",f"${filtered_df['Purchase Amount (USD)'].sum()}")
 col2.metric("Total Customer ",f"{filtered_df['Customer ID'].count()}")
-col3.metric("Gender",f"{filtered_df['Gender'].count()}")
+col3.metric("Female",f"{filtered_df[filtered_df['Gender']=='Female'].shape[0]}")
+col4.metric("Female",f"{filtered_df[filtered_df['Gender']=='Male'].shape[0]}")
 
 
 #--------------Showing Tabel---------------------------
 col1,col2,col3=st.columns(3)
 with col1:
-    sales=filtered_df.groupby('Category')['Purchase Amount (USD)'].sum().reset_index()
+    sales=filtered_df.groupby(['Category','Gender'])['Purchase Amount (USD)'].sum().reset_index()
     fig = px.bar(
         sales,
         x='Category',
         y='Purchase Amount (USD)',
+        color='Gender',
+        barmode="group",
         title='Total Purchase Amount by Category',
         text='Purchase Amount (USD)'
     )
@@ -81,11 +84,13 @@ with col2:
     st.plotly_chart(fig)
 
 with col3:
-    sales=filtered_df.groupby('Payment Method')['Purchase Amount (USD)'].sum().reset_index()
+    sales=filtered_df.groupby(['Payment Method','Gender'])['Purchase Amount (USD)'].sum().reset_index()
     fig = px.bar(
         sales,
         x='Payment Method',
         y='Purchase Amount (USD)',
+        color='Gender',
+        barmode="group",
         title='Total Amount by payment',
         text='Purchase Amount (USD)'
         
@@ -99,9 +104,44 @@ with col1:
     values="Purchase Amount (USD)",
     names="Gender",
     title="Sales Amount by Gender"
+    
+)
+st.plotly_chart(fig)
+
+with col2:
+    sales=filtered_df.groupby('New Age')['Purchase Amount (USD)'].sum().reset_index()
+    fig = px.pie(
+    sales,
+    values="Purchase Amount (USD)",
+    names="New Age",
+    title="Sales Amount by Age"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+
+st.plotly_chart(fig)
+
+
+#-------------Multi line chart
+col1,col2=st.columns(2)
+with col1:
+    sales=df.groupby(['Season','Category'])['Purchase Amount (USD)'].sum().reset_index()
+    fig=px.line(sales,
+                x='Season',
+                y='Purchase Amount (USD)',
+                color='Category',
+                markers=True,
+                title='Sales per category in season')
+    st.plotly_chart(fig)
+
+with col2:
+    sales=df.groupby(['Shipping Type','Category'])['Purchase Amount (USD)'].sum().reset_index()
+    fig=px.line(sales,
+                x='Shipping Type',
+                y='Purchase Amount (USD)',
+                color='Category',
+                markers=True,
+                title='Sales per category by shipping type')
+    st.plotly_chart(fig)
 
 
 
