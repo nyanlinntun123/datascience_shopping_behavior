@@ -51,7 +51,7 @@ col1,col2,col3,col4=st.columns(4)
 col1.metric("Total sale ",f"${filtered_df['Purchase Amount (USD)'].sum()}")
 col2.metric("Total Customer ",f"{filtered_df['Customer ID'].count()}")
 col3.metric("Female",f"{filtered_df[filtered_df['Gender']=='Female'].shape[0]}")
-col4.metric("Female",f"{filtered_df[filtered_df['Gender']=='Male'].shape[0]}")
+col4.metric("Male",f"{filtered_df[filtered_df['Gender']=='Male'].shape[0]}")
 
 
 #--------------Showing Tabel---------------------------
