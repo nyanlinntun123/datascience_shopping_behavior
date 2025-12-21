@@ -138,7 +138,7 @@ with col3:
   
 
 #-------------Multi line chart
-col1,col2=st.columns(2)
+col1,col2,col3=st.columns(3)
 with col1:
     sales=filtered_df.groupby(['Season','Category'])['Purchase Amount (USD)'].sum().reset_index()
     fig=px.line(sales,
@@ -160,6 +160,15 @@ with col2:
                 title='Sales per category by shipping type')
     st.plotly_chart(fig)
 
+with col3:
+    sales=filtered_df.groupby(['Frequency of Purchases','Category'])['Purchase Amount (USD)'].sum().reset_index()
+    fig=px.line(sales,
+                x='Frequency of Purchases',
+                y='Purchase Amount (USD)',
+                color='Category',
+                markers=True,
+                title='Sales per category by Frequency')
+    st.plotly_chart(fig)
 
 
 
