@@ -106,7 +106,7 @@ with col1:
     title="Sales Amount by Gender"
     
 )
-st.plotly_chart(fig)
+    st.plotly_chart(fig)
 
 with col2:
     sales=filtered_df.groupby('New Age')['Purchase Amount (USD)'].sum().reset_index()
@@ -118,8 +118,24 @@ with col2:
 )
 
 
-st.plotly_chart(fig)
+    st.plotly_chart(fig)
 
+with col3:
+    sales=filtered_df.groupby(['New Age','Gender'])['Purchase Amount (USD)'].sum().reset_index()
+    fig = px.bar(
+        sales,
+        x='New Age',
+        y='Purchase Amount (USD)',
+        color='Gender',
+        barmode="group",
+        title='Total Purchase Amount by Age of Gender',
+        
+        text='Purchase Amount (USD)'
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+
+  
 
 #-------------Multi line chart
 col1,col2=st.columns(2)
