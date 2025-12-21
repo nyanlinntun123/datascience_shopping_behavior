@@ -124,17 +124,18 @@ st.plotly_chart(fig)
 #-------------Multi line chart
 col1,col2=st.columns(2)
 with col1:
-    sales=df.groupby(['Season','Category'])['Purchase Amount (USD)'].sum().reset_index()
+    sales=filtered_df.groupby(['Season','Category'])['Purchase Amount (USD)'].sum().reset_index()
     fig=px.line(sales,
                 x='Season',
                 y='Purchase Amount (USD)',
                 color='Category',
                 markers=True,
                 title='Sales per category in season')
+               
     st.plotly_chart(fig)
 
 with col2:
-    sales=df.groupby(['Shipping Type','Category'])['Purchase Amount (USD)'].sum().reset_index()
+    sales=filtered_df.groupby(['Shipping Type','Category'])['Purchase Amount (USD)'].sum().reset_index()
     fig=px.line(sales,
                 x='Shipping Type',
                 y='Purchase Amount (USD)',
